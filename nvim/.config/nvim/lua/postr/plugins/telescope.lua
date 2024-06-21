@@ -15,10 +15,8 @@ return {
 			pickers = {
 				find_files = {
 					find_command = { "rg", "--files", "-L", "--hidden", "--glob", "!**/.git/*", "--smart-case" },
-					theme = "dropdown",
 				},
 				live_grep = {
-					theme = "dropdown",
 					find_command = { "rg", "--files", "-L", "--hidden", "--glob", "!**/.git/*", "--smart-case" },
 				},
 			},
@@ -31,6 +29,13 @@ return {
             ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
 					},
 				},
+      layout_strategy = 'vertical',
+      layout_config = {
+          height = 0.9,
+          anchor = "N",
+          prompt_position = "bottom",
+          preview_cutoff = 8
+        },
 			},
 		})
 

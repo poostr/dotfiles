@@ -6,6 +6,7 @@ return {
 		"mfussenegger/nvim-dap-python",
 		"nvim-lualine/lualine.nvim",
 	},
+  tag = "0.3",
 	event = "VeryLazy",
 	ft = "python",
 	init = function()
