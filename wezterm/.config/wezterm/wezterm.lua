@@ -72,7 +72,7 @@ config.mouse_bindings = {
 	-- Ctrl-click will open the link under the mouse cursor
 	{
 		event = { Up = { streak = 1, button = "Left" } },
-		mods = "CMD",
+		mods = "CTRL",
 		action = wezterm.action.OpenLinkAtMouseCursor,
 	},
 	-- Disable the Ctrl-click down event to stop programs from seeing it when a URL is clicked

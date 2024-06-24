@@ -12,7 +12,7 @@ return {
 			initial_width = 30,
 			hide_statusline = true,
 			update_interval = 1000,
-			sections = { "files", "containers", "git" },
+			sections = { "buffers", "containers", "git" },
 			section_separator = { "", "-----", "" },
 			section_title_separator = { "" },
 			containers = {
