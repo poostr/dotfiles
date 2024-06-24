@@ -1,10 +1,28 @@
 return {
 	"mfussenegger/nvim-dap",
 	enabled = vim.fn.has("win32") == 0,
-	-- event = "User BaseFile",
 	dependencies = {
 		{ "nvim-neotest/nvim-nio" },
 		{ "rcarriga/nvim-dap-ui" },
+    { "theHamsta/nvim-dap-virtual-text",
+      config = function()
+        require('nvim-dap-virtual-text').setup({
+          display_callback = function(variable)
+            local name = string.lower(variable.name)
+            local value = string.lower(variable.value)
+            if name:match "secret"or name:match "token" or value:match "secret" or value:match "token" then
+              return "*****"
+            end
+
+            if #variable.value > 15 then
+              return " " .. string.sub(variable.value, 1, 15) .. "... "
+            end
+
+            return " " .. variable.value
+          end
+        })
+      end
+    },
 		{
 			"rcarriga/cmp-dap",
 			dependencies = { "nvim-cmp" },
@@ -32,9 +50,6 @@ return {
 					return "modulename", args
 				end
 
-				-- vim.keymap.set("n", "<leader>dp", function() require("dap-python").test_method() end, { desc = "Pytest method" })
-				-- vim.keymap.set("n", "<leader>pc", function() require("dap-python").test_class() end, { desc = "Pytest class" })
-				-- vim.keymap.set("v", "<leader>ps", function() require("dap-python").debug_selection() end, { desc = "Pytest section" })
 			end,
 		},
 	},
@@ -57,13 +72,21 @@ return {
 		-- end
 
 		vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "DapBreakpoint", linehl = "", numhl = "" })
-		vim.keymap.set("n", "<F8>", ":DapToggleBreakpoint<CR>", { desc = "Toogle [B]reakpoint" })
-		vim.keymap.set("n", "<leader>b", ":DapToggleBreakpoint<CR>", { desc = "Toogle [B]reakpoint" })
-		vim.keymap.set("n", "<F2>", ":DapContinue<CR>", { desc = "[D]ap [C]ontinue" })
-		vim.keymap.set("n", "<leader>dc", ":DapContinue<CR>", { desc = "[D]ap [C]ontinue" })
+
+		vim.keymap.set("n", "<F1>", dap.continue, { desc = "[D]ap [C]ontinue" })
+		vim.keymap.set("n", "<F2>", dap.run_to_cursor, { desc = "[D]ap run to cursor" })
+		vim.keymap.set("n", "<F3>", dap.step_over, { desc = "[D]ap [S]tep over" })
+		vim.keymap.set("n", "<F4>", dap.step_into, { desc = "[D]ap [S]tep into" })
+		vim.keymap.set("n", "<F5>", dap.step_back, { desc = "[D]ap [S]tep back" })
+		vim.keymap.set("n", "<F8>", dap.toggle_breakpoint, { desc = "Toogle [B]reakpoint" })
+		vim.keymap.set("n", "<F10>", dap.restart, { desc = "[D]ap restart" })
+		vim.keymap.set("n", "<F12>", function() dapui.close() end, { desc = "[D]ap [T]erminate" })
+    vim.keymap.set("n", "<leader>?", function() dapui.eval(nil, { enter = true }) end, { desc = "Unpuck dap text"})
+
+		vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Toogle [B]reakpoint" })
+		vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "[D]ap [C]ontinue" })
 		vim.keymap.set("n", "<leader>dt", function() dapui.close() end, { desc = "[D]ap [T]erminate" })
-		vim.keymap.set("n", "<F9>", ":DapStepOver<CR>", { desc = "[D]ap [S]tep over" })
-		vim.keymap.set("n", "<leader>ds", ":DapStepOver<CR>", { desc = "[D]ap [S]tep over" })
+		vim.keymap.set("n", "<leader>ds", dap.step_over, { desc = "[D]ap [S]tep over" })
 
 		-- Python
 		dap.adapters.python = {
