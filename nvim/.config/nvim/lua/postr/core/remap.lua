@@ -2,6 +2,7 @@ vim.g.mapleader = " "
 
 local keymap = vim.keymap
 
+keymap.set('n', "<leader>r", "<CMD>!tmux split-window -p 20 python %<CR>", { desc = "Run python file"})
 
 -- buffer movement
 -- keymap.set("n", "<leader>]", vim.cmd.bnext, { desc = "Next buffer"})
