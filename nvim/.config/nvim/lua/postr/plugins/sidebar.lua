@@ -7,7 +7,7 @@ return {
 
 		require("sidebar-nvim").setup({
 			bindings = nil,
-			open = true,
+			open = false,
 			side = "left",
 			initial_width = 30,
 			hide_statusline = true,

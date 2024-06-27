@@ -2,7 +2,7 @@ vim.g.mapleader = " "
 
 local keymap = vim.keymap
 
-keymap.set('n', "<leader>r", "<CMD>!tmux split-window -p 20 python %<CR>", { desc = "Run python file"})
+keymap.set('n', "<leader>rp", "<CMD>!tmux split-window -l 10 python %<CR> <Enter>", { desc = "Run python file"})
 
 -- buffer movement
 -- keymap.set("n", "<leader>]", vim.cmd.bnext, { desc = "Next buffer"})
@@ -16,9 +16,6 @@ keymap.set("n", "<D-a>", "gg<S-v>G")
 keymap.set('n', '<leader>Ya', "<cmd>%y+<CR>", { noremap = true }, { silent = true })
 keymap.set({'n', 'v'}, "<D-c>", [[+y]])
 
-
--- use jk to exit insert mode
-keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 
 -- increment/decrement numbers
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment

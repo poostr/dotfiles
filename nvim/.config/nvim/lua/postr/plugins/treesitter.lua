@@ -1,7 +1,7 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    tag = "v0.9.0",
+    -- tag = "v0.9.0",
     event = { "BufReadPre", "BufNewFile" },
     build = ":TSUpdate",
     dependencies = {
@@ -45,7 +45,9 @@ return {
           "regex",
           "sql",
           "toml",
-          "swift"
+          "swift",
+          "http",
+          "vimdoc",
         },
         incremental_selection = {
           enable = true,
