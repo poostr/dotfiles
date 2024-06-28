@@ -12,9 +12,8 @@ keymap.set("n", "<leader>bh", "<cmd>set showtabline=0<CR>", { desc = "[B]uffer [
 keymap.set("n", "<leader>bs", "<cmd>set showtabline=2<CR>", { desc = "[B]uffer [S]how"})
 
 -- copy all and select all
-keymap.set("n", "<D-a>", "gg<S-v>G")
+keymap.set("n", "<C-a>", "gg<S-v>G")
 keymap.set('n', '<leader>Ya', "<cmd>%y+<CR>", { noremap = true }, { silent = true })
-keymap.set({'n', 'v'}, "<D-c>", [[+y]])
 
 
 -- increment/decrement numbers

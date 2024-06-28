@@ -1,7 +1,7 @@
 vim.opt.termguicolors = true
 vim.opt.encoding = "UTF-8"
 -- vim.opt.guicursor = ""
-vim.opt.cursorline = true
+vim.opt.cursorline = false
 vim.opt.background = "dark"
 vim.opt.signcolumn = "yes"
 
