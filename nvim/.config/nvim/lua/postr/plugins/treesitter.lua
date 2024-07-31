@@ -65,7 +65,7 @@ return {
         },
       })
 
-      vim.cmd([[hi @method.call.python guifg=white]])
+      vim.cmd([[hi @attribute.python guifg=white]])
     end,
   },
 }

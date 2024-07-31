@@ -1,6 +1,9 @@
 return {
 	"nvim-lualine/lualine.nvim",
-	dependencies = { "nvim-tree/nvim-web-devicons" },
+	dependencies = {
+		"nvim-tree/nvim-web-devicons",
+		"AlexvZyl/nordic.nvim",
+	},
 	config = function()
 		local lualine = require("lualine")
 		local lazy_status = require("lazy.status") -- to configure lazy pending updates count
@@ -27,6 +30,7 @@ return {
 		-- configure lualine with modified theme
 		lualine.setup({
 			options = {
+				theme = "nordic",
 				component_separators = "|",
 				section_separators = { left = "", right = "" },
 			},

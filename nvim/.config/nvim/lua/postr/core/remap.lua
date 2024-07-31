@@ -3,11 +3,12 @@ vim.g.mapleader = " "
 local keymap = vim.keymap
 
 keymap.set('n', "<leader>rp", "<CMD>!tmux split-window -l 10 python %<CR> <Enter>", { desc = "Run python file"})
+keymap.set({'n', 'v'}, "<M-c>", [["+y]])
 
 -- buffer movement
 -- keymap.set("n", "<leader>]", vim.cmd.bnext, { desc = "Next buffer"})
 -- keymap.set("n", "<leader>[", vim.cmd.bprevious, { desc = "Previous biffer"})
-keymap.set("n", "<leader>w", vim.cmd.bdelete, { desc = "Delete buffer"})
+keymap.set("n", "<leader>W", vim.cmd.bdelete, { desc = "Delete buffer"})
 keymap.set("n", "<leader>bh", "<cmd>set showtabline=0<CR>", { desc = "[B]uffer [H]ide"})
 keymap.set("n", "<leader>bs", "<cmd>set showtabline=2<CR>", { desc = "[B]uffer [S]how"})
 
@@ -28,8 +29,8 @@ keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) --
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
 keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
 keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
-keymap.set("n", "<leader>w+", "<C-w>+", { desc = "Increase the height of current split" })
-keymap.set("n", "<leader>w+", "<C-w>-", { desc = "Decrease the height of current split" })
+keymap.set("n", "<leader>w+", "30<C-w>_", { desc = "Increase the height of current split" })
+keymap.set("n", "<leader>w+", "30<C-w>|", { desc = "Decrease the height of current split" })
 
 
 -- Primgean remaps

@@ -7,19 +7,33 @@ local config = wezterm.config_builder()
 config.animation_fps = 60
 config.max_fps = 60
 
+config.enable_kitty_keyboard = true
+config.enable_csi_u_key_encoding = false
 config.macos_window_background_blur = 5
+-- Rose theme
+-- config.background = {
+-- 	{
+-- 		source = { Color = "#222130" },
+-- 		width = "100%",
+-- 		height = "100%",
+-- 		opacity = 0.9,
+-- 	},
+-- }
+-- config.color_scheme = "rose-pine-moon"
+
+-- Nord them
+config.color_scheme = "nord"
 config.background = {
 	{
-    source = {Color="#222130"},
+		source = { Color = "#242933" },
 		width = "100%",
 		height = "100%",
 		opacity = 0.9,
 	},
 }
 
-config.color_scheme = "rose-pine-moon"
 config.font = wezterm.font("JetBrains Mono", { italic = false, bold = true })
-config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
+config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
 config.font_size = 20
 config.line_height = 1.2
 -- config.window_decorations = "NONE"
@@ -89,7 +103,12 @@ config.keys = {
 		key = "b",
 		mods = "CMD",
 		action = wezterm.action.OpenLinkAtMouseCursor,
-	}
+	},
+	{
+		key = "C",
+		mods = "CMD",
+		action = wezterm.action.CopyTo("ClipboardAndPrimarySelection"),
+	},
 }
 
 -- and finally, return the configuration to wezterm

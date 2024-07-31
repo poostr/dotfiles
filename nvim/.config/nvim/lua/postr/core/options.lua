@@ -4,10 +4,12 @@ vim.opt.encoding = "UTF-8"
 vim.opt.cursorline = false
 vim.opt.background = "dark"
 vim.opt.signcolumn = "yes"
+vim.opt.cmdheight = 0
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
+vim.opt.pumheight = 8
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
