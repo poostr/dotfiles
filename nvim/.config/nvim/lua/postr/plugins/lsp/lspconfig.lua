@@ -95,19 +95,9 @@ return {
 			filetypes = { "python" },
 			settings = {
 				python = {
-					-- executionEnvironments = {
-					--   {
-					--     root = "~/Desktop/Autotests/project_api_tests/",
-					--     extraPaths = "~/Desktop/Autotests/project_api_tests/api_sync_lib",
-					--   },
-					--   {
-					--     root = "~/Desktop/Autotests/checker_test_users/",
-					--     extraPaths = "~/Desktop/Autotests/ati_api_async ",
-					--   },
-					-- },
 					analysis = {
 						autoImportCompletions = true,
-						diagnosticMode = "workspace",
+						-- diagnosticMode = "workspace",
 						autoSearchPaths = false,
 					},
 				},
@@ -119,20 +109,20 @@ return {
 		-- Configure `ruff-lsp`.
 		-- See: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#ruff_lsp
 		-- For the default config, along with instructions on how to customize the settings
-		lspconfig["ruff_lsp"].setup({
-			settings = {
-				pyright = {
-					-- Using Ruff's import organizer
-					disableOrganizeImports = true,
-				},
-				python = {
-					analysis = {
-						-- Ignore all files for analysis to exclusively use Ruff for linting
-						ignore = { "*" },
-					},
-				},
-			},
-		})
+		-- lspconfig["ruff_lsp"].setup({
+		-- 	settings = {
+		-- 		pyright = {
+		-- 			-- Using Ruff's import organizer
+		-- 			disableOrganizeImports = true,
+		-- 		},
+		-- 		python = {
+		-- 			analysis = {
+		-- 				-- Ignore all files for analysis to exclusively use Ruff for linting
+		-- 				ignore = { "*" },
+		-- 			},
+		-- 		},
+		-- 	},
+		-- })
 
 		-- configure lua server (with special settings)
 		lspconfig["lua_ls"].setup({

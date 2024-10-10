@@ -15,6 +15,6 @@ return {
 		})
 
 		local keymap = vim.keymap
-		keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
+		-- keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
 	end,
 }

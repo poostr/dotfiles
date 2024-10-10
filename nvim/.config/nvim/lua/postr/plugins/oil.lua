@@ -26,16 +26,20 @@ return {
 				is_hidden_file = function(name, _)
 					if vim.startswith(name, "__p") then
 						return true
-          elseif vim.startswith(name, '.idea') then
-            return true
-          elseif vim.startswith(name, '.DS') then
-            return true
-          elseif vim.startswith(name, '.ruff') then
-            return true
-          elseif vim.startswith(name, '.pytest') then
-            return true
-          elseif vim.startswith(name, '.g') then
-            return true
+					elseif vim.startswith(name, ".idea") then
+						return true
+					elseif vim.startswith(name, ".DS") then
+						return true
+					elseif vim.startswith(name, ".ruff") then
+						return true
+					elseif vim.startswith(name, ".pytest") then
+						return true
+					elseif vim.startswith(name, ".venv") then
+						return true
+					elseif vim.startswith(name, ".gitlab-ci.yml") then
+						return false
+					elseif vim.startswith(name, ".g") then
+						return true
 					end
 				end,
 			},

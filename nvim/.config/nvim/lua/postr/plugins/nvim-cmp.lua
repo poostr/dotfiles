@@ -19,7 +19,7 @@ return {
 
 		-- from tj work with snippets
 		for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/postr/plugins/snippets/*.lua", true)) do
-		  loadfile(ft_path)()
+			loadfile(ft_path)()
 		end
 
 		vim.keymap.set({ "i", "s" }, "<c-k>", function()
@@ -33,7 +33,6 @@ return {
 				luasnip.jump(-1)
 			end
 		end, { silent = true })
-
 
 		cmp.setup({
 			completion = {
@@ -54,14 +53,14 @@ return {
 				["<C-i>"] = cmp.mapping.confirm({
 					behavior = cmp.ConfirmBehavior.Insert,
 					select = true,
-          {"i", "c"}
+					{ "i", "c" },
 				}),
 			}),
 
 			-- sources for autocompletion
 			sources = cmp.config.sources({
 				{ name = "nvim_lsp" },
-        { name = "luasnip" }, -- snippets
+				{ name = "luasnip" }, -- snippets
 				{ name = "path" }, -- file system paths
 				{ name = "buffer" }, -- text within current buffer
 			}),
@@ -83,7 +82,6 @@ return {
 					return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
 				end
 			end,
-
-	})
+		})
 	end,
 }

@@ -3,8 +3,8 @@ return {
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	version = "*",
   keys = {
-    {"<leader>]", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer"}},
-    {"<leader>[", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer"}},
+    {"<C-p>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer"}},
+    {"<C-n>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer"}},
   },
 	config = function()
 		local bufferline = require("bufferline")

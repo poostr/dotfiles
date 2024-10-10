@@ -34,7 +34,7 @@ config.background = {
 
 config.font = wezterm.font("JetBrains Mono", { italic = false, bold = true })
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
-config.font_size = 20
+config.font_size = 22
 config.line_height = 1.2
 -- config.window_decorations = "NONE"
 config.hide_tab_bar_if_only_one_tab = true
