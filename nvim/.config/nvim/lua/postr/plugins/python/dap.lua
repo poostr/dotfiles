@@ -73,7 +73,7 @@ return {
 
 		vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "DapBreakpoint", linehl = "", numhl = "" })
 
-		vim.keymap.set("n", "<F1>", dap.continue, { desc = "[D]ap [C]ontinue" })
+		-- vim.keymap.set("n", "<F1>", dap.continue, { desc = "[D]ap [C]ontinue" })
 		vim.keymap.set("n", "<F2>", dap.run_to_cursor, { desc = "[D]ap run to cursor" })
 		vim.keymap.set("n", "<F3>", dap.step_over, { desc = "[D]ap [S]tep over" })
 		vim.keymap.set("n", "<F4>", dap.step_into, { desc = "[D]ap [S]tep into" })

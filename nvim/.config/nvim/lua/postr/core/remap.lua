@@ -4,6 +4,7 @@ local keymap = vim.keymap
 
 keymap.set('n', "<leader>rp", "<CMD>!tmux split-window -l 10 python %<CR> <Enter>", { desc = "Run python file"})
 keymap.set({'n', 'v'}, "<M-c>", [["+y]])
+keymap.set('c', '<C-q>', '<C-f>', { noremap = true, silent = true })
 
 -- buffer movement
 -- keymap.set("n", "<leader>]", vim.cmd.bnext, { desc = "Next buffer"})

@@ -16,9 +16,6 @@ require("lazy").setup({
 	{ import = "postr.plugins.lsp" },
 	{ import = "postr.plugins.python" },
 }, {
-	install = {
-		colorscheme = { "rose-pine-moon" },
-	},
 	checker = {
 		enabled = true,
 		notify = false,

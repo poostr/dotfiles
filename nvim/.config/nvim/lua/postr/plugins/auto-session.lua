@@ -6,7 +6,7 @@ return {
 
 			session_lens = {
 				buftypes_to_ignore = {},
-				load_on_setup = true,
+				load_on_setup = false,
 				theme_conf = { border = true },
 				previewer = false,
 			},

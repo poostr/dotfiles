@@ -6,7 +6,7 @@ return {
 		"mfussenegger/nvim-dap-python",
 		"nvim-lualine/lualine.nvim",
 	},
-  tag = "0.3",
+	tag = "0.3",
 	event = "VeryLazy",
 	ft = "python",
 	init = function()
@@ -25,7 +25,6 @@ return {
 						venv_selector.retrieve_from_cache()
 					end
 				end,
-			once = true,
 			}),
 		})
 	end,

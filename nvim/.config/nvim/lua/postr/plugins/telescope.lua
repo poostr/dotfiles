@@ -4,20 +4,32 @@ return {
 		"nvim-lua/plenary.nvim",
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 		"nvim-tree/nvim-web-devicons",
+		"smartpde/telescope-recent-files",
 	},
 	config = function()
 		local telescope = require("telescope")
 		local actions = require("telescope.actions")
 		local tb = require("telescope.builtin")
+		local recent_files = require("telescope").load_extension("recent_files")
 
 		telescope.setup({
 			extensions = {},
 			pickers = {
 				find_files = {
-					find_command = { "rg", "--files", "-L", "--hidden", "--glob", "!**/.git/*", "--smart-case" },
+					find_command = {
+						"rg",
+						"--files",
+						"-L",
+						"--hidden",
+						"--sortr=modified",
+						"--glob",
+						"!**/.git/*",
+						"--smart-case",
+					},
 				},
 				live_grep = {
-					find_command = { "rg", "--files", "-L", "--hidden", "--glob", "!**/.git/*", "--smart-case" },
+					find_command = { "rg", "--files", "-L", "--hidden",  "--glob", "!**/.git/*", "--smart-case" },
+          additional_args = {"--hidden"}
 				},
 			},
 			defaults = {
@@ -26,16 +38,16 @@ return {
 					i = {
 						["<C-k>"] = actions.move_selection_previous, -- move to prev result
 						["<C-j>"] = actions.move_selection_next, -- move to next result
-            ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+						["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
 					},
 				},
-      layout_strategy = 'vertical',
-      layout_config = {
-          height = 0.9,
-          anchor = "N",
-          prompt_position = "bottom",
-          preview_cutoff = 8
-        },
+				layout_strategy = "vertical",
+				layout_config = {
+					height = 0.9,
+					anchor = "N",
+					prompt_position = "bottom",
+					preview_cutoff = 8,
+				},
 			},
 		})
 
@@ -44,14 +56,21 @@ return {
 
 		keymap.set("n", "<leader>sq", tb.help_tags, { desc = "[S]earch [Q]uestions" })
 		keymap.set("n", "<leader>sf", tb.find_files, { desc = "[S]earch [F]iles" })
-		keymap.set("n", "<leader><leader>", tb.live_grep, { desc = "[S]earch by [G]rep" })
+		keymap.set(
+			"n",
+			"<Leader><Leader>",
+			[[<cmd>lua require('telescope').extensions.recent_files.pick()<CR>]],
+			{ noremap = true, silent = true }
+		)
+		-- keymap.set("n", "<leader><leader>", tb.live_grep, { desc = "[S]earch by [G]rep" })
+		keymap.set("n", "<leader>ss", tb.live_grep, { desc = "[S]earch by [G]rep" })
 		-- keymap.set("n", "<leader>sg", tb.live_grep, { desc = "[S]earch by [G]rep" })
-		keymap.set("n", "<leader>ss", tb.grep_string, { desc = "[S]earch current [W]orld" })
+		-- keymap.set("n", "<leader>ss", tb.grep_string, { desc = "[S]earch current [W]orld" })
 		keymap.set("n", "<leader>sk", tb.keymaps, { desc = "[S]earch [K]eymaps" })
 		keymap.set("n", "<leader>sd", tb.diagnostics, { desc = "[S]earch [D]iagnostics" })
 		keymap.set("n", "<leader>sb", tb.buffers, { desc = "[ ] Find existing buffers" })
 		keymap.set("n", "<leader>si", tb.search_history, { desc = "[S]earch H[I]story" })
-    keymap.set("n", "<leader>sz", tb.spell_suggest, { desc = "[S]pell suggest"})
+		keymap.set("n", "<leader>sz", tb.spell_suggest, { desc = "[S]pell suggest" })
 		-- Slightly advanced example of overriding default behavior and theme
 		keymap.set("n", "<leader>/", function()
 			-- You can pass additional configuration to telescope to change theme, layout, etc.
