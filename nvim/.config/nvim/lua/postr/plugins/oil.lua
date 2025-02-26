@@ -21,7 +21,7 @@ return {
 			default_file_explorer = true,
 			constrain_cursor = "editable",
 			delete_to_trash = true,
-			skip_confirm_for_simple_edits = true,
+			skip_confirm_for_simple_edits = false,
 			view_options = {
 				is_hidden_file = function(name, _)
 					if vim.startswith(name, "__p") then

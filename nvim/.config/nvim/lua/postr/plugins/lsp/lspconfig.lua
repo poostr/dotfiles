@@ -91,30 +91,30 @@ return {
 		end
 
 		-- configure python server
-		-- lspconfig["pyright"].setup({
-		-- 	filetypes = { "python" },
-		-- 	settings = {
-		-- 		python = {
-		-- 			analysis = {
-		-- 				autoImportCompletions = true,
-		-- 				-- diagnosticMode = "workspace",
-		-- 				autoSearchPaths = false,
-		-- 			},
-		-- 		},
-		-- 	},
-		-- 	capabilities = capabilities,
-		-- 	on_attach = on_attach,
-		-- })
+		lspconfig["pyright"].setup({
+			filetypes = { "python" },
+			settings = {
+				python = {
+					analysis = {
+						autoImportCompletions = true,
+						-- diagnosticMode = "workspace",
+						autoSearchPaths = false,
+					},
+				},
+			},
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
 		--
     -- configure basedpyright python
-    lspconfig['basedpyright'].setup({
-      filetypes = { "python" },
-      basedpyright = {
-        analysis = {
-          diagnosticMode = "openFilesOnly"
-        }
-      }
-    })
+    -- lspconfig['basedpyright'].setup({
+    --   filetypes = { "python" },
+    --   basedpyright = {
+    --     analysis = {
+    --       diagnosticMode = "openFilesOnly"
+    --     }
+    --   }
+    -- })
 
 		-- Configure `ruff-lsp`.
 		-- See: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#ruff_lsp
@@ -159,6 +159,9 @@ return {
 		lspconfig["yamlls"].setup({
 			settings = {
 				yaml = {
+          format = {
+            enable = false,
+          },
 					schemaStore = {
 						enable = false,
 						url = "",

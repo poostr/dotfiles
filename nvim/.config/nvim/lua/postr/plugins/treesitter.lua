@@ -64,8 +64,9 @@ return {
 					enable_autocmd = false,
 				},
 			})
-      
-      vim.cmd([[hi @variable.parameter.python guifg=white]])
+
+			vim.cmd([[hi @variable.parameter.python guifg=white]])
+			vim.cmd([[hi @function.method.call.python guifg=white]])
 			-- vim.cmd([[hi @attribute.python guifg=#B74E58]])
 		end,
 	},
