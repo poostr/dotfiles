@@ -106,15 +106,15 @@ return {
 			on_attach = on_attach,
 		})
 		--
-    -- configure basedpyright python
-    -- lspconfig['basedpyright'].setup({
-    --   filetypes = { "python" },
-    --   basedpyright = {
-    --     analysis = {
-    --       diagnosticMode = "openFilesOnly"
-    --     }
-    --   }
-    -- })
+		-- configure basedpyright python
+		-- lspconfig['basedpyright'].setup({
+		--   filetypes = { "python" },
+		--   basedpyright = {
+		--     analysis = {
+		--       diagnosticMode = "openFilesOnly"
+		--     }
+		--   }
+		-- })
 
 		-- Configure `ruff-lsp`.
 		-- See: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#ruff_lsp
@@ -159,27 +159,34 @@ return {
 		lspconfig["yamlls"].setup({
 			settings = {
 				yaml = {
-          format = {
-            enable = false,
-          },
-					schemaStore = {
-						enable = false,
-						url = "",
+					capabilities = capabilities,
+					on_attach = on_attach,
+					settings = {
+						yaml = {
+							format = {
+								enable = true,
+								singleQuote = false,
+								bracketSpacing = true,
+								proseWrap = "preserve",
+								printWidth = 80,
+								tabWidth = 2,
+								useTabs = false,
+								bracketSameLine = false,
+								arrowParens = "avoid",
+								endOfLine = "lf",
+							},
+							validate = true,
+							hover = true,
+							completion = true,
+							schemaStore = {
+								enable = true,
+								url = "https://json.schemastore.org/schema-catalog.json",
+							},
+							schemas = {
+								["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+							},
+						},
 					},
-					schemas = require("schemastore").yaml.schemas({
-						-- select subset from the JSON schema catalog
-						select = {
-							"kustomization.yaml",
-							"docker-compose.yml",
-						},
-
-						-- additional schemas (not in the catalog)
-						extra = {
-							url = "https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json",
-							name = "Argo CD Application",
-							fileMatch = "argocd-application.yaml",
-						},
-					}),
 				},
 			},
 		})

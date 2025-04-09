@@ -25,10 +25,11 @@ return {
 		end
 
 		harpoon.setup({
-			vim.keymap.set("n", "<C-e>", function()
-				toggle_telescope(harpoon:list())
-			end, { desc = "Open harpoon window" }),
+			-- vim.keymap.set("n", "<C-e>", function()
+			-- 	toggle_telescope(harpoon:list())
+			-- end, { desc = "Open harpoon window" }),
 			-- vim.keymap.set("n", "<leader>rd", function() harpoon:list():remove() end, { desc = "Delete harpoon mark" }),
+      vim.keymap.set('n', "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end,{ desc = "Harpponn quick menu"}),
 			vim.keymap.set("n", "<leader>a", function()
 				harpoon:list():add()
 			end, { desc = "Add harpoon" }),

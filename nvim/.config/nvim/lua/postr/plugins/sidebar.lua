@@ -6,6 +6,7 @@ return {
 		vim.keymap.set("n", "<leader>q", function() sidebar.toggle() end, { desc = "Toggle sidebar" })
 
 		require("sidebar-nvim").setup({
+      disable_devicons = true,
 			bindings = nil,
 			open = false,
 			side = "left",
