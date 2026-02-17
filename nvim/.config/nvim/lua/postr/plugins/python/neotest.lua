@@ -53,7 +53,11 @@ return {
 						console = "integratedTerminal",
 					},
 					args = { "-sv", "--log-level", "DEBUG" },
-					python = require("venv-selector").get_active_path(),
+					python = function()
+						local venv_path = require("venv-selector").venv()
+						return venv_path and (venv_path .. "/bin/python") or "python"
+					end,
+
 					runner = "pytest",
 				}),
 			},

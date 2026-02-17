@@ -12,7 +12,7 @@ return {
 			},
 		})
 
-		vim.keymap.set("n", "<leader>sl", require("auto-session.session-lens").search_session, { desc = '[S]ession [L]ist'}, { noremap = true, })
-    vim.keymap.set('n', "<leader>sw", "<cmd>Autosession delete<CR>", {desc= '[S]ession delete'})
+		vim.keymap.set("n", "<leader>sl", "<cmd>AutoSession search<CR>", { desc = "[S]ession [L]ist" })
+		vim.keymap.set("n", "<leader>sw", "<cmd>AutoSession delete<CR>", { desc = "[S]ession delete" })
 	end,
 }

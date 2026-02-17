@@ -28,8 +28,8 @@ return {
 					},
 				},
 				live_grep = {
-					find_command = { "rg", "--files", "-L", "--hidden",  "--glob", "!**/.git/*", "--smart-case" },
-          additional_args = {"--hidden"}
+					find_command = { "rg", "--files", "-L", "--hidden", "--glob", "!**/.git/*", "--smart-case" },
+					additional_args = { "--hidden" },
 				},
 			},
 			defaults = {
@@ -56,16 +56,8 @@ return {
 
 		keymap.set("n", "<leader>sq", tb.help_tags, { desc = "[S]earch [Q]uestions" })
 		keymap.set("n", "<leader>sf", tb.find_files, { desc = "[S]earch [F]iles" })
-		keymap.set(
-			"n",
-			"<Leader><Leader>",
-			[[<cmd>lua require('telescope').extensions.recent_files.pick()<CR>]],
-			{ noremap = true, silent = true }
-		)
-		-- keymap.set("n", "<leader><leader>", tb.live_grep, { desc = "[S]earch by [G]rep" })
-		keymap.set("n", "<leader>ss", tb.live_grep, { desc = "[S]earch by [G]rep" })
-		-- keymap.set("n", "<leader>sg", tb.live_grep, { desc = "[S]earch by [G]rep" })
-		-- keymap.set("n", "<leader>ss", tb.grep_string, { desc = "[S]earch current [W]orld" })
+		keymap.set("n", "<Leader><Leader>", tb.live_grep, { noremap = true, silent = true })
+		keymap.set("n", "<Leader>ss", tb.live_grep, { noremap = true, silent = true })
 		keymap.set("n", "<leader>sk", tb.keymaps, { desc = "[S]earch [K]eymaps" })
 		keymap.set("n", "<leader>sd", tb.diagnostics, { desc = "[S]earch [D]iagnostics" })
 		keymap.set("n", "<leader>sb", tb.buffers, { desc = "[ ] Find existing buffers" })

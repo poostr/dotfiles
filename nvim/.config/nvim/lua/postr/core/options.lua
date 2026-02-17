@@ -35,7 +35,7 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
-vim.opt.colorcolumn = "120"
+vim.opt.colorcolumn = "88"
 vim.opt.clipboard = "unnamedplus"
 
 vim.g.mkdp_refresh_slow = 0

@@ -1,0 +1,13 @@
+k9s:
+  cluster: kubernetes@kubernetes
+  namespace:
+    active: autotests
+    lockFavorites: false
+    favorites:
+      - autotests
+      - default
+  view:
+    active: v1/pods autotests
+  featureGates:
+    nodeShell: false
+  proxy: null

@@ -21,7 +21,7 @@ return {
 			default_file_explorer = true,
 			constrain_cursor = "editable",
 			delete_to_trash = true,
-			skip_confirm_for_simple_edits = false,
+			skip_confirm_for_simple_edits = true,
 			view_options = {
 				is_hidden_file = function(name, _)
 					if vim.startswith(name, "__p") then
@@ -62,6 +62,13 @@ return {
 						else
 							require("oil").set_columns({ "icon" })
 						end
+					end,
+				},
+				["gy"] = {
+					desc = "Copy full path to clipboard",
+					callback = function()
+						require("oil.actions").copy_entry_path.callback()
+						vim.fn.setreg("+", vim.fn.getreg(vim.v.register))
 					end,
 				},
 			},

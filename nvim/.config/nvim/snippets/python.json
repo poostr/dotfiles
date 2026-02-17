@@ -1,0 +1,50 @@
+{
+  "Allure Step": {
+    "prefix": "als",
+    "body": [
+      "with allure.step($1):",
+      "    $0"
+    ],
+    "description": "Allure step context manager"
+  },
+  
+  "Assert True": {
+    "prefix": "ass",
+    "body": "assert True",
+    "description": "Simple assert True statement"
+  },
+  
+  "Test Class": {
+    "prefix": "testcl",
+    "body": [
+      "import pytest",
+      "import allure",
+      "",
+      "class Test$1:",
+      "    @pytest.fixture(scope=\"class\")",
+      "    def user(self, users):",
+      "        return users.get_firm().Contact",
+      "        ",
+      "    def test_$2(self, user, api):",
+      "        \"\"\"",
+      "        $0",
+      "        \"\"\"",
+      "        with allure.step():",
+      "            assert True"
+    ],
+    "description": "Test class template with pytest and allure"
+  },
+  
+  "Test Function": {
+    "prefix": "testf", 
+    "body": [
+      "def test_$1(self, user, api):",
+      "    \"\"\"",
+      "    $0", 
+      "    \"\"\"",
+      "    with allure.step():",
+      "        assert True"
+    ],
+    "description": "Test function template with allure step"
+  }
+}

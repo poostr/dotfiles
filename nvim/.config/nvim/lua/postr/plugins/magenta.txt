@@ -1,0 +1,56 @@
+return {
+	"dlants/magenta.nvim",
+	lazy = false, -- you could also bind to <leader>mt
+	build = "npm install --frozen-lockfile",
+	opts = {},
+	config = function()
+		require("magenta").setup({
+			profiles = {
+				{
+					name = "copilot-claude",
+					provider = "copilot",
+					model = "claude-3.7-sonnet",
+					fastModel = "claude-3-5-haiku-latest", -- optional, defaults provided
+					-- No apiKeyEnvVar needed - uses existing Copilot authentication
+				},
+			},
+			-- open chat sidebar on left or right side
+			sidebarPosition = "left",
+			-- can be changed to "telescope" or "snacks"
+			picker = "fzf-lua",
+			-- enable default keymaps shown below
+			defaultKeymaps = true,
+			-- maximum number of sub-agents that can run concurrently (default: 3)
+			maxConcurrentSubagents = 3,
+			-- keymaps for the sidebar input buffer
+			sidebarKeymaps = {
+				normal = {
+					["<CR>"] = ":Magenta send<CR>",
+				},
+			},
+			-- keymaps for the inline edit input buffer
+			-- if keymap is set to function, it accepts a target_bufnr param
+			inlineKeymaps = {
+				normal = {
+					["<CR>"] = function(target_bufnr)
+						vim.cmd("Magenta submit-inline-edit " .. target_bufnr)
+					end,
+				},
+			},
+			-- configure MCP servers for external tool integrations
+			mcpServers = {
+				fetch = {
+					command = "uvx",
+					args = { "mcp-server-fetch" },
+				},
+				playwright = {
+					command = "npx",
+					args = {
+						"@playwright/mcp@latest",
+					},
+				},
+			},
+		})
+		print("DEBUG: Magenta setup config function finished!")
+	end,
+}

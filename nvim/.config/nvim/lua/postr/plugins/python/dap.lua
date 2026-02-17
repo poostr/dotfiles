@@ -4,28 +4,56 @@ return {
 	dependencies = {
 		{ "nvim-neotest/nvim-nio" },
 		{ "rcarriga/nvim-dap-ui" },
-    { "theHamsta/nvim-dap-virtual-text",
-      config = function()
-        require('nvim-dap-virtual-text').setup({
-          display_callback = function(variable)
-            local name = string.lower(variable.name)
-            local value = string.lower(variable.value)
-            if name:match "secret"or name:match "token" or value:match "secret" or value:match "token" then
-              return "*****"
-            end
+		{
+			"igorlfs/nvim-dap-view",
+			opts = {
+				winbar = {
+					show = true,
+					-- You can add a "console" section to merge the terminal with the other views
+					sections = { "scopes", "repl", "exceptions", "watches", "breakpoints", "threads" },
+					controls = {
+						enabled = true,
+					},
+				},
+				windows = {
+					size = 0.25,
+					position = "below",
+					terminal = {
+						size = 0.5,
+						position = "right",
+						hide = {},
+					},
+				},
+			},
+		},
+		{
+			"theHamsta/nvim-dap-virtual-text",
+			config = function()
+				require("nvim-dap-virtual-text").setup({
+					display_callback = function(variable)
+						local name = string.lower(variable.name)
+						local value = string.lower(variable.value)
+						if
+							name:match("secret")
+							or name:match("token")
+							or value:match("secret")
+							or value:match("token")
+						then
+							return "*****"
+						end
 
-            if #variable.value > 15 then
-              return " " .. string.sub(variable.value, 1, 15) .. "... "
-            end
+						if #variable.value > 15 then
+							return " " .. string.sub(variable.value, 1, 15) .. "... "
+						end
 
-            return " " .. variable.value
-          end
-        })
-      end
-    },
+						return " " .. variable.value
+					end,
+				})
+			end,
+		},
 		{
 			"rcarriga/cmp-dap",
-			dependencies = { "nvim-cmp" },
+			dependencies = { "hrsh7th/nvim-cmp" },
 			config = function()
 				require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
 					sources = {
@@ -35,7 +63,7 @@ return {
 			end,
 		},
 		{
-			"fussenegger/nvim-dap-python",
+			"mfussenegger/nvim-dap-python",
 			ft = "python",
 			config = function()
 				-- uses the debugypy installation by mason
@@ -49,7 +77,6 @@ return {
 					local args = { classname, methodname }
 					return "modulename", args
 				end
-
 			end,
 		},
 	},
@@ -58,12 +85,27 @@ return {
 
 		local dap, dapui = require("dap"), require("dapui")
 
-		dap.listeners.before.attach.dapui_config = function()
-			dapui.open()
+		dap.listeners.before.attach.dapview_config = function()
+			vim.cmd("DapViewOpen")
+			-- Switch to watches view (use 'W' key)
+			vim.defer_fn(function()
+				vim.api.nvim_feedkeys("W", "n", false)
+			end, 100)
 		end
-		dap.listeners.before.launch.dapui_config = function()
-			dapui.open()
+		dap.listeners.before.launch.dapview_config = function()
+			vim.cmd("DapViewOpen")
+			-- Switch to watches view (use 'W' key)
+			vim.defer_fn(function()
+				vim.api.nvim_feedkeys("W", "n", false)
+			end, 100)
 		end
+
+		-- dap.listeners.before.attach.dapui_config = function()
+		-- 	dapui.open()
+		-- end
+		-- dap.listeners.before.launch.dapui_config = function()
+		-- 	dapui.open()
+		-- end
 		-- dap.listeners.before.event_terminated.dapui_config = function()
 		-- 	dapui.close()
 		-- end
@@ -80,13 +122,30 @@ return {
 		vim.keymap.set("n", "<F5>", dap.step_back, { desc = "[D]ap [S]tep back" })
 		vim.keymap.set("n", "<F8>", dap.toggle_breakpoint, { desc = "Toogle [B]reakpoint" })
 		vim.keymap.set("n", "<F10>", dap.restart, { desc = "[D]ap restart" })
-		vim.keymap.set("n", "<F12>", function() dapui.close() end, { desc = "[D]ap [T]erminate" })
-    vim.keymap.set("n", "<leader>?", function() dapui.eval(nil, { enter = true }) end, { desc = "Unpuck dap text"})
+		vim.keymap.set("n", "<leader>?", function()
+			dapui.eval(nil, { enter = true })
+		end, { desc = "Unpuck dap text" })
 
 		vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Toogle [B]reakpoint" })
 		vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "[D]ap [C]ontinue" })
-		vim.keymap.set("n", "<leader>dt", function() dapui.close() end, { desc = "[D]ap [T]erminate" })
-		vim.keymap.set("n", "<leader>ds", dap.step_over, { desc = "[D]ap [S]tep over" })
+		vim.keymap.set("n", "<leader>ds", function()
+			-- Close all DAP terminal buffers
+			for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+				if vim.api.nvim_buf_is_valid(buf) then
+					local bufname = vim.api.nvim_buf_get_name(buf)
+					if bufname:match("dap%-terminal") or vim.bo[buf].buftype == "terminal" then
+						local wins = vim.fn.win_findbuf(buf)
+						for _, win in ipairs(wins) do
+							if vim.api.nvim_win_is_valid(win) then
+								vim.api.nvim_win_close(win, true)
+							end
+						end
+					end
+				end
+			end
+			vim.cmd("DapViewClose")
+			dap.terminate()
+		end, { desc = "[D]ap [S]top debuuger" })
 
 		-- Python
 		dap.adapters.python = {
@@ -98,9 +157,77 @@ return {
 			{
 				type = "python",
 				request = "launch",
+				name = "Launch app.main (direct)",
+				program = "${workspaceFolder}/app/main.py", -- Point to your main.py file
+				console = "integratedTerminal",
+				justMyCode = true,
+				cwd = "${workspaceFolder}",
+				env = {
+					PYTHONUNBUFFERED = "1",
+					PYTHONPATH = "${workspaceFolder}",
+				},
+				pythonPath = function()
+					local cwd = vim.fn.getcwd()
+					if vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
+						return cwd .. "/.venv/bin/python"
+					elseif vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
+						return cwd .. "/venv/bin/python"
+					end
+					return "python"
+				end,
+			},
+			{
+
+				type = "python",
+				request = "launch",
 				name = "Launch file",
 				program = "${file}", -- This configuration will launch the current file if used.
+				env = {
+					PYTHONUNBUFFERED = "1",
+					PYTHONPATH = "${workspaceFolder}",
+				},
+				pythonPath = function()
+					local cwd = vim.fn.getcwd()
+					if vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
+						return cwd .. "/.venv/bin/python"
+					elseif vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
+						return cwd .. "/venv/bin/python"
+					end
+					return "python"
+				end,
 			},
+			-- {
+			-- 	type = "python",
+			-- 	request = "launch",
+			-- 	name = "FastAPI: Uvicorn app.main:app",
+			-- 	module = "uvicorn",
+			-- 	args = {
+			-- 		"app.main:app",
+			-- 		"--host",
+			-- 		"0.0.0.0",
+			-- 		"--port",
+			-- 		"8000",
+			-- 		"--no-access-log",
+			-- 		"--reload",
+			-- 	},
+			-- 	justMyCode = true,
+			-- 	subProcess = false,
+			-- 	console = "integratedTerminal",
+			-- 	cwd = "${workspaceFolder}",
+			-- 	env = {
+			-- 		PYTHONUNBUFFERED = "1",
+			-- 		PYTHONPATH = "${workspaceFolder}",
+			-- 	},
+			-- 	pythonPath = function()
+			-- 		local cwd = vim.fn.getcwd()
+			-- 		if vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
+			-- 			return cwd .. "/.venv/bin/python"
+			-- 		elseif vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
+			-- 			return cwd .. "/venv/bin/python"
+			-- 		end
+			-- 		return "python"
+			-- 	end,
+			-- },
 		}
 
 		-- Lua
