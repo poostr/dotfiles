@@ -1,0 +1,69 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "Всегда отвечайте на русском языке, независимо от того, на каком языке пишет пользователь.",
+    "Убедитесь, что все объяснения, комментарии и взаимодействия осуществляются на русском языке.",
+    "Техническая терминология может оставаться на английском языке, но с объяснением на русском.",
+    "Никогда и ни при каких обстоятельствах не открывай и не редактируй файл `.zshrc`. Если нужно проверить переменные окружения, используй команду `echo`. Если нужно добавить или изменить переменные окружения, предложи пользователю команду для самостоятельного выполнения."
+  ],
+  "model": "github-copilot/gpt-5-mini",
+  "mcp": {
+    "exa": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "exa-mcp-server"
+      ],
+      "enabled": true,
+      "environment": {
+        "EXA_API_KEY": "{env:EXA_API_KEY}"
+      }
+    },
+    "playwright": {
+      "type": "local",
+      "command": [
+        "npx",
+        "@playwright/mcp@latest"
+      ],
+      "enabled": true
+    }
+  },
+  "provider": {
+    "litellm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LiteLLM Gateway",
+      "options": {
+        "baseURL": "http://litellm-gateway.service.consul/v1",
+        "apiKey": "{env:LITE_LLM_TOKEN}"
+      },
+      "models": {
+        "gpt-oss:20b": {
+          "name": "GPT-OSS 20B"
+        },
+        "qwen3-embedding-4b": {
+          "name": "Qwen3 Embedding 4B"
+        },
+        "qwen3:8b": {
+          "name": "Qwen3 8B"
+        }
+      }
+    },
+    "lmstudio": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM Studio (local)",
+      "options": {
+        "baseURL": "http://localhost:1234/v1",
+        "apiKey": "{env:LM_API_TOKEN}"
+      },
+      "models": {
+        "qwen/qwen3.5-9b": {
+          "name": "Qwen 3.5 9B"
+        },
+        "omnicoder-9b": {
+          "name": "Omnicoder 9B"
+        }
+      }
+    }
+  }
+}

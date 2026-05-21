@@ -33,7 +33,7 @@ vim.opt.incsearch = true
 vim.opt.scrolloff = 8
 vim.opt.isfname:append("@-@")
 
-vim.opt.updatetime = 50
+vim.opt.updatetime = 250
 
 vim.opt.colorcolumn = "88"
 vim.opt.clipboard = "unnamedplus"
@@ -49,3 +49,6 @@ vim.opt.spell = true
 vim.opt.spelllang = "ru,en_us"
 
 vim.opt.laststatus = 3
+
+vim.g.matchparen_timeout = 20
+vim.g.matchparen_insert_timeout = 20

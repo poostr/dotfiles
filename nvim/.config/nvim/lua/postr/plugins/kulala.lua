@@ -20,25 +20,33 @@ return {
 						return
 					end
 				end
-				-- Find last opened buffer from this directory
-				local last_buf = nil
-				for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-					if vim.api.nvim_buf_is_loaded(buf) then
-						local bufname = vim.api.nvim_buf_get_name(buf)
-						if bufname:find(collection_path, 1, true) then
-							last_buf = buf
-						end
-					end
-				end
-				vim.cmd("vsplit")
-				if last_buf then
-					vim.api.nvim_win_set_buf(0, last_buf)
-				else
-					vim.cmd("edit " .. collection_path)
-				end
+				-- Open split and use oil or netrw to browse the directory
+				vim.cmd("vsplit " .. collection_path)
 			end,
 			desc = "Toggle requests collection",
 		},
 	},
 	ft = { "http", "rest" },
+	opts = {
+		default_view = "body",
+		-- default_env = "dev",
+		debug = false,
+		ui = {
+			win_opts = {
+				wo = { foldmethod = "manual" }, -- window options
+			},
+		},
+		lsp = {
+			enable = true,
+			keymaps = false, -- disabled by default, as Kulala relies on default Neovim LSP keymaps
+			formatter = {
+				sort = { -- enable/disable alphabetical sorting in request body
+					metadata = true,
+					variables = true,
+					commands = true,
+					json = false,
+				},
+			},
+		},
+	},
 }

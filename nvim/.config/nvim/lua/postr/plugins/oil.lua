@@ -22,6 +22,12 @@ return {
 			constrain_cursor = "editable",
 			delete_to_trash = true,
 			skip_confirm_for_simple_edits = true,
+			lsp_file_methods = {
+				enabled = true,
+				timeout_ms = 1000,
+				autosave_changes = false,
+			},
+
 			view_options = {
 				is_hidden_file = function(name, _)
 					if vim.startswith(name, "__p") then

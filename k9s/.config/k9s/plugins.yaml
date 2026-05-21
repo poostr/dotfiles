@@ -1,0 +1,21 @@
+---
+plugins:
+  logs-less:  # opens the logs in less to be searchable (but does not follow)
+    shortCut: Shift-L
+    description: logs|less
+    scopes: [po]
+    command: bash
+    background: false
+    args:
+      - -c
+      - '"$@" | less'
+      - dummy-arg
+      - kubectl
+      - logs
+      - $NAME
+      - -n
+      - $NAMESPACE
+      - --context
+      - $CONTEXT
+      - --kubeconfig
+      - $KUBECONFIG

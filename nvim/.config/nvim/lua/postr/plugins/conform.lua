@@ -6,6 +6,8 @@ return {
 			formatters_by_ft = {
 				lua = { "stylua" },
 				yaml = { "yamlfix" },
+				json = { "jq" },
+				jsonc = { "jq" },
 				-- rust = { "rustfmt", lsp_format = "fallback" },
 				python = function(bufnr)
 					if require("conform").get_formatter_info("ruff_format", bufnr).available then

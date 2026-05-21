@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(brew install:*)",
+      "Bash(brew upgrade:*)",
+      "Bash(npm install -g:*)",
+      "Bash(pip install:*)",
+      "Bash(pip3 install:*)",
+      "Bash(pipx install:*)",
+      "Bash(cargo install:*)",
+      "Bash(gem install:*)",
+      "Bash(apt install:*)",
+      "Bash(apt-get install:*)",
+      "Bash(yum install:*)",
+      "Bash(dnf install:*)",
+      "Read(/Users/kuznetsov.p/.zshrc)",
+      "Edit(/Users/kuznetsov.p/.zshrc)",
+      "Write(/Users/kuznetsov.p/.zshrc)"
+    ]
+  },
+  "model": "opus",
+  "statusLine": {
+    "type": "command",
+    "command": "sh /Users/kuznetsov.p/.claude/statusline-command.sh"
+  },
+  "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true,
+    "caveman@caveman": true
+  },
+  "extraKnownMarketplaces": {
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    }
+  },
+  "language": "russian",
+  "syntaxHighlightingDisabled": false,
+  "effortLevel": "high",
+  "skipDangerousModePermissionPrompt": true
+}

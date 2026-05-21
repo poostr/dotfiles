@@ -10,17 +10,23 @@ return {
 
 		-- get schema for current buffer
 		local function get_schema()
-			local schema = require("yaml-companion").get_buf_schema(0)
-			if schema.result[1].name == "none" then
+			if vim.bo.filetype ~= "yaml" then
 				return ""
 			end
-			return schema.result[1].name
+			local schema = require("yaml-companion").get_buf_schema(0)
+			if schema and schema.result and schema.result[1] and schema.result[1].name == "none" then
+				return ""
+			end
+			return schema and schema.result and schema.result[1] and schema.result[1].name or ""
 		end
 
 		-- configure lualine with modified theme
 		lualine.setup({
 			options = {
 				theme = "nordic",
+        refresh = {
+          statusline = 1000
+        },
 				component_separators = "|",
 				section_separators = { left = "", right = "" },
 			},

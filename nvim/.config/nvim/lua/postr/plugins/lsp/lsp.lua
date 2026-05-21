@@ -57,6 +57,15 @@ return {
 				local opts = { buffer = ev.buf, noremap = true, silent = true }
 				local client = vim.lsp.get_client_by_id(ev.data.client_id)
 
+				-- Отключаем поддержку навигации у basedpyright, чтобы за неё полностью отвечал ty
+				if client.name == "basedpyright" then
+					client.server_capabilities.definitionProvider = false
+					client.server_capabilities.referencesProvider = false
+					client.server_capabilities.implementationProvider = false
+					client.server_capabilities.typeDefinitionProvider = false
+					client.server_capabilities.declarationProvider = false
+				end
+
 				-- Set keybinds
 				opts.desc = "Show LSP references"
         keymap.set("n", "gR", function() require("telescope.builtin").lsp_references() end, opts)
@@ -64,8 +73,40 @@ return {
 				opts.desc = "Go to declaration"
 				keymap.set("n", "gb", vim.lsp.buf.declaration, opts)
 
-				opts.desc = "Show LSP definitions"
-				keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+				opts.desc = "Show LSP definitions (first only)"
+				keymap.set("n", "gd", function()
+					-- Берем offset_encoding из клиента ty, если он доступен, или берем любой другой utf-16 по-умолчанию
+					local client = (vim.lsp.get_clients({ bufnr = 0, name = "ty" }) or {})[1] or (vim.lsp.get_clients({ bufnr = 0 }) or {})[1]
+					local encoding = client and client.offset_encoding or "utf-16"
+					local params = vim.lsp.util.make_position_params(0, encoding)
+					
+					vim.lsp.buf_request(0, "textDocument/definition", params, function(err, result, ctx, _)
+						if err or not result or vim.tbl_isempty(result) then
+							return
+						end
+
+						local target
+						-- Обрабатываем deprecated метод vim.tbl_islist на Neovim 0.10+
+						local is_list = vim.islist or vim.tbl_islist
+						
+						if is_list(result) then
+							-- Если есть стабы (.pyi) и реализация (.py), предпочитаем реализацию
+							target = result[1]
+							for _, res in ipairs(result) do
+								local uri = res.uri or res.targetUri
+								if uri and not string.match(uri, "%.pyi$") then
+									target = res
+									break
+								end
+							end
+						else
+							target = result
+						end
+
+						local req_client = vim.lsp.get_client_by_id(ctx.client_id)
+						vim.lsp.util.jump_to_location(target, req_client and req_client.offset_encoding or encoding)
+					end)
+				end, opts)
 
 				opts.desc = "Show LSP implementations"
 				keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
@@ -135,7 +176,68 @@ return {
 						autoImportCompletions = true,
 						autoSearchPaths = false,
 					},
-					capabilities = capabilities,
+			capabilities = vim.tbl_deep_extend("force", capabilities, {
+				offsetEncoding = { "utf-16" },
+				workspace = {
+					workspaceFolders = true,
+					fileOperations = {
+						willRename = true,
+					},
+				},
+			}),
+
+				},
+			},
+		}
+
+		-- Configure ty (Python type checker)
+		-- vim.lsp.config.ty = {
+		-- 	cmd = { "ty", "server" },
+		-- 	filetypes = { "python" },
+		-- 	root_markers = {
+		-- 		"pyproject.toml",
+		-- 		"ty.toml",
+		-- 		".git",
+		-- 	},
+		-- 	capabilities = vim.tbl_deep_extend("force", capabilities, {
+		-- 		offsetEncoding = { "utf-16" },
+		-- 		workspace = {
+		-- 			workspaceFolders = true,
+		-- 			fileOperations = {
+		-- 				willRename = true,
+		-- 			},
+		-- 		},
+		-- 	}),
+		-- }
+
+    		-- Basedpyright 
+    		vim.lsp.config.basedpyright = {
+			cmd = { "basedpyright-langserver", "--stdio" },
+			filetypes = { "python" },
+			root_markers = {
+				"pyrightconfig.json",
+				"pyproject.toml",
+				"setup.py",
+				".git",
+			},
+			capabilities = vim.tbl_deep_extend("force", capabilities, {
+				offsetEncoding = { "utf-16" },
+				workspace = {
+					workspaceFolders = true,
+					fileOperations = {
+						willRename = true,
+					},
+				},
+			}),
+			settings = {
+				basedpyright = {
+					analysis = {
+						typeCheckingMode = "off",
+						autoImportCompletions = true,
+						diagnosticSeverityOverrides = {
+							reportUnusedImport = "information",
+						},
+					},
 				},
 			},
 		}
@@ -284,6 +386,7 @@ return {
 			pattern = "python",
 			callback = function()
 				vim.lsp.enable("pyright")
+				vim.lsp.enable("basedpyright")
 			end,
 		})
 

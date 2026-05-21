@@ -16,9 +16,86 @@ return {
 		build = "make tiktoken", -- Only on MacOS or Linux
 		lazy = false,
 		opts = {
-			model = "claude-opus-4.5",
+			model = "claude-sonnet-4.6",
 			proxy = os.getenv("COPILOT_PROXY"),
-      allow_insecure = false,
+			allow_insecure = false,
+
+			providers = {
+				lm_studio = (function()
+					local lm_token = os.getenv("LM_API_TOKEN") or ""
+					return {
+					get_headers = function()
+						return {
+							["Content-Type"] = "application/json",
+							["Authorization"] = "Bearer " .. lm_token,
+						}
+					end,
+
+					get_url = function()
+						return "http://localhost:1234/v1/chat/completions"
+					end,
+
+					get_models = function()
+						local ok, res = pcall(function()
+							local response =
+								vim.fn.system(
+								'curl -s --connect-timeout 2 -H "Authorization: Bearer '
+									.. lm_token
+									.. '" http://localhost:1234/v1/models'
+							)
+							return vim.fn.json_decode(response)
+						end)
+
+						if ok and res and res.data then
+							local models = {}
+							for _, m in ipairs(res.data) do
+								table.insert(models, {
+									id = m.id,
+									name = m.id,
+									tokenizer = "cl100k_base",
+									max_input_tokens = m.max_model_len or 8192,
+									max_output_tokens = 4096,
+									streaming = true,
+								})
+							end
+							return models
+						end
+
+						return {
+							{
+								id = "local-model",
+								name = "LM Studio (fallback)",
+								tokenizer = "cl100k_base",
+								max_input_tokens = 8192,
+								max_output_tokens = 4096,
+								streaming = true,
+							},
+						}
+					end,
+
+					prepare_input = function(inputs, opts)
+						local messages = vim.tbl_map(function(input)
+							return {
+								role = input.role,
+								content = input.content,
+							}
+						end, inputs)
+
+						return {
+							messages = messages,
+							model = opts.model.id,
+							stream = opts.model.streaming or false,
+							temperature = opts.temperature or 0.7,
+							max_tokens = opts.model.max_output_tokens or 4096,
+						}
+					end,
+
+					prepare_output = function(...)
+						return require("CopilotChat.config.providers").copilot.prepare_output(...)
+					end,
+				}
+				end)(),
+			},
 			clear_chat_on_new_prompt = false,
 			highlight_selection = false,
 			highlight_headers = false,

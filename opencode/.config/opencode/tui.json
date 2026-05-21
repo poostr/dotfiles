@@ -1,0 +1,8 @@
+{
+  "$schema": "https://opencode.ai/tui.json",
+  "keybinds": {
+    "sidebar_toggle": "ctrl+b",
+    "messages_line_up": "ctrl+y",
+    "messages_line_down": "ctrl+e"
+  }
+}

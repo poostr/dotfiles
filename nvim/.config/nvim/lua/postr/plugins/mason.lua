@@ -43,7 +43,9 @@ return {
 				"ruff", -- python linter,
 				"jsonlint", --json linter,
 				"jq",
+				"prettier",
 				"yamlfix",
+				"ty",
 			},
 		})
 
